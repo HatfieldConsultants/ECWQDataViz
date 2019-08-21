@@ -8,7 +8,8 @@ format_wq_data <- function(data){
 #' @param data is a data.frame or tibble from the Environment Canada Freshwater Quality Monitoring and Surveillance - Online Data.   
 #' @import dplyr
 #' @import stringr
-#' @import tidyr   
+#' @import tidyr  
+#' @export 
   cols <- c("Status", "Value.modifier.code","Unit.code")
   
   idCols <- c("Sample.time","Sample.number","Sample.type",names(data)[(grepl(paste(cols,collapse="|"),names(data)))])

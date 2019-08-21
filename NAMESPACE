@@ -2,7 +2,9 @@
 
 export(CombineAnalytePlots)
 export(CreatePlotPerAnalyte)
+export(format_wq_data)
 export(hat_col_list)
+export(plot_wq_data)
 export(run_app)
 export(server)
 export(ui)

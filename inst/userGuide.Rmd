@@ -11,7 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * Download your data as a csv from the Environment Canada Website: http://aquatic.pyr.ec.gc.ca/webdataonlinenational/en/Home
 
-* An example csv file can be found here[]
+* An example csv file can be found in the package files. Type the following line in your console for a file path:
+
+```r 
+system.file("ExampleEC_file.csv", package = "ecviz")
+
+```
 
 * Upload the csv file
 

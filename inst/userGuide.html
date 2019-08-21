@@ -383,12 +383,18 @@ $(document).ready(function () {
 
 <ul>
 <li><p>Download your data as a csv from the Environment Canada Website: <a href="http://aquatic.pyr.ec.gc.ca/webdataonlinenational/en/Home" class="uri">http://aquatic.pyr.ec.gc.ca/webdataonlinenational/en/Home</a></p></li>
-<li><p>An example csv file can be found here[]</p></li>
+<li><p>An example csv file can be found in the package files. Type the following line in your console for a file path:</p></li>
+</ul>
+<pre class="r"><code>system.file(&quot;ExampleEC_file.csv&quot;, package = &quot;ecviz&quot;)
+</code></pre>
+<ul>
 <li><p>Upload the csv file</p></li>
-<li>The app will provide you with three choices:</li>
+<li>The app will provide you with three choices:
+<ul>
 <li>Head: shows the first few rows of the data</li>
 <li>All: shows all the data</li>
-<li><p>Figure: shows a time-series plot</p></li>
+<li>Figure: shows a time-series plot</li>
+</ul></li>
 <li><p>You can also choose to only show selected parameters</p></li>
 </ul>
 

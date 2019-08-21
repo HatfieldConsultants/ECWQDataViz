@@ -127,7 +127,7 @@ CombineAnalytePlots <- function(analytePlots){
 plot_wq_data <- function(dataLong){
   #' @import ggplot2
   #' @import ggpubr
-
+  #' @export
   library(ggplot2)
   library(ggpubr)
   library(scales)
