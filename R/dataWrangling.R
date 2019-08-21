@@ -1,7 +1,3 @@
-
-data <- read.csv("./data-raw/YT09BC0002_PYAES_0_19920807_to_19960913.csv")
-head(data)
-
 numExtract <- function(string){
   str_extract(string,("\\.\\d\\."))
 }

@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(testApp)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -34,7 +35,11 @@ ui <- fluidPage(
                    choices = c(Head = "head",
                                All = "all",
                                Figure = "figure"),
-                   selected = "head")
+                   selected = "head"),
+      # Horizontal line ----
+      tags$hr(),
+      
+      uiOutput('uiParameter')
     ),
     
     # Show a plot of the generated distribution
@@ -71,13 +76,24 @@ server <- function(input, output) {
       )
     })
   
+  output$uiParameter <- renderUI({
+    data <- dataShow()
+    selectInput("selectParameter",
+                label = "Select parameter:",
+                choices = c(unique(data$Analyte), ""),
+                selected = "")
+  })
   
-  output$head <- renderTable({
-    
-    dataOut <- dataset()
-    return(head(dataOut))})
-  
-  
+  dataShow <- reactive(
+    {req(input$file1)
+    if(is.null(input$selectParameter) ||
+       input$selectParameter == ""){
+      dataOut <- dataset() } else {
+        dataOut <- dataset() %>% filter(input$selectParameter)}
+    }
+    return(dataOut)
+  )
+
   output$result <- renderUI(
     { switch(input$disp,
              head=tableOutput('head'),
@@ -86,14 +102,18 @@ server <- function(input, output) {
     }
   )
   
+  output$head <- renderTable({
+    dataOut <- dataShow()
+    return(head(dataOut))})
+  
   output$all <- renderTable({
-    
-    dataOut <- dataset()
+    req(input$file1)
+    dataOut <- dataShow()
     return((dataOut))})
   
   output$figure <- renderPlot({
-    
-    dataOut <- dataset()
+    req(input$file1)
+    dataOut <- dataShow()
     plot_wq_data(dataOut)
   })
   
