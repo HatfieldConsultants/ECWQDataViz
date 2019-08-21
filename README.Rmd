@@ -18,18 +18,21 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-To install the latest development version from [GitHub](https://github.com/bcgov/shinyrems)
+There are ways of installing the package directly from GitLab but we have been having issues with the authentication for those.
 
-``` r
-# install.packages("remotes")
-remotes::install_github("bcgov/shinyrems")
-```
+To install the latest development version from Gitlab:
+* Download the project from 
+* Open the Rproj file in RStudio
+* Click "Build > Install and restart"
+
+
 
 ## Usage
 
 
 To open the shiny app, run the following command in your R console:
-```
+
+``` r
 ecviz::run_app()
 ```
 

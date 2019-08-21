@@ -1,0 +1,24 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# ecviz
+
+`ecviz` is an app to visualize data downloaded from the Environment
+Canada Freshwater quality monitoring.
+
+## Installation
+
+There are ways of installing the package directly from GitLab but we
+have been having issues with the authentication for those.
+
+To install the latest development version from Gitlab: \* Download the
+project from \* Open the Rproj file in RStudio \* Click “Build \>
+Install and restart”
+
+## Usage
+
+To open the shiny app, run the following command in your R console:
+
+``` r
+ecviz::run_app()
+```
