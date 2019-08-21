@@ -13,7 +13,7 @@ library(shiny)
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Visualizations of EC Freshwater Quality Monitoring and Surveillance Online Data"),
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
@@ -29,26 +29,6 @@ ui <- fluidPage(
             # Horizontal line ----
             tags$hr(),
             
-            # Input: Checkbox if file has header ----
-            checkboxInput("header", "Header", TRUE),
-            
-            # Input: Select separator ----
-            radioButtons("sep", "Separator",
-                         choices = c(Comma = ",",
-                                     Semicolon = ";",
-                                     Tab = "\t"),
-                         selected = ","),
-            
-            # Input: Select quotes ----
-            radioButtons("quote", "Quote",
-                         choices = c(None = "",
-                                     "Double Quote" = '"',
-                                     "Single Quote" = "'"),
-                         selected = '"'),
-            
-            # Horizontal line ----
-            tags$hr(),
-            
             # Input: Select number of rows to display ----
             radioButtons("disp", "Display",
                          choices = c(Head = "head",
@@ -59,46 +39,64 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-           tableOutput("contents")
+            uiOutput('result')
         )
     )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-
-    output$contents <- renderTable({
-        
-        # input$file1 will be NULL initially. After the user selects
-        # and uploads a file, head of that data file by default,
-        # or all rows if selected, will be shown.
-        
-        req(input$file1)
-        
-        # when reading semicolon separated files,
-        # having a comma separator causes `read.csv` to error
-        tryCatch(
-            {
-                df <- read.csv(input$file1$datapath,
-                               header = input$header,
-                               sep = input$sep,
-                               quote = input$quote)
-            },
-            error = function(e) {
-                # return a safeError if a parsing error occurs
-                stop(safeError(e))
-            }
-        )
-        
-        if(input$disp == "head") {
-            return(head(df))
-        }
-        else {
-            return(df)
-        }
-        
-    })
     
+    dataset <- reactive(
+        {req(input$file1)
+            # input$file1 will be NULL initially. After the user selects
+            # and uploads a file, head of that data file by default,
+            # or all rows if selected, will be shown.
+            
+                         
+                         # when reading semicolon separated files,
+                         # having a comma separator causes `read.csv` to error
+                         tryCatch(
+                             {
+                                 df <- read.csv(input$file1$datapath)
+                                 
+                                 dataLong <- format_wq_data(df)
+                                 
+                                 return(dataLong)
+                             },
+                             error = function(e) {
+                                 # return a safeError if a parsing error occurs
+                                 stop(safeError(e))
+                             }
+                         )
+            })
+    
+    
+    output$head <- renderTable({
+        
+        dataOut <- dataset()
+        return(head(dataOut))})
+    
+   
+    output$result <- renderUI(
+       { switch(input$disp,
+               head=tableOutput('head'),
+               all=tableOutput('all'),
+               figure=plotOutput('figure'))
+       }
+    )
+    
+    output$all <- renderTable({
+        
+        dataOut <- dataset()
+        return((dataOut))})
+    
+    output$figure <- renderPlot({
+        
+        dataOut <- dataset()
+        plot_wq_data(dataOut)
+    })
+
 }
 
 # Run the application 
