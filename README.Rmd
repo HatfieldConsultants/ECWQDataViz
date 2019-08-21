@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# ecviz
+`ecviz` is an app to visualize data downloaded from the Environment Canada Freshwater quality monitoring.
+
+## Installation
+
+To install the latest development version from [GitHub](https://github.com/bcgov/shinyrems)
+
+``` r
+# install.packages("remotes")
+remotes::install_github("bcgov/shinyrems")
+```
+
+## Usage
+
+
+To open the shiny app, run the following command in your R console:
+```
+ecviz::run_app()
+```
+
+
+
+
+
+

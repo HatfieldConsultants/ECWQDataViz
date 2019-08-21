@@ -8,10 +8,11 @@
 #
 
 library(shiny)
-library(testApp)
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
+ui <- function(){
+  #' @export
+  fluidPage(
   
   # Application title
   titlePanel("Visualizations of EC Freshwater Quality Monitoring and Surveillance Online Data"),
@@ -39,19 +40,30 @@ ui <- fluidPage(
       # Horizontal line ----
       tags$hr(),
       
-      uiOutput('uiParameter')
+      uiOutput('uiParameter'),
+      actionButton("filterButton", "Filter Parameters")
     ),
     
     # Show a plot of the generated distribution
     mainPanel(
-      uiOutput('result')
+      tabsetPanel(selected = "Data/Plot",
+                  tabPanel("Data/Plot",
+                           br(),
+                           uiOutput('result')),
+                  tabPanel("User guide",
+                           br(),
+                           includeHTML(system.file("userGuide.html", package = "ecviz"))
+                          )
+                  )
+ 
     )
   )
 )
+}
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-  
+#' @export
   dataset <- reactive(
     {req(input$file1)
       # input$file1 will be NULL initially. After the user selects
@@ -65,7 +77,7 @@ server <- function(input, output) {
         {
           df <- read.csv(input$file1$datapath)
           
-          dataLong <- format_wq_data(df)
+          dataLong <- ecviz::format_wq_data(df)
           
           return(dataLong)
         },
@@ -77,21 +89,25 @@ server <- function(input, output) {
     })
   
   output$uiParameter <- renderUI({
-    data <- dataShow()
-    selectInput("selectParameter",
+    data <- dataset()
+    selectizeInput("selectParameter",
                 label = "Select parameter:",
                 choices = c(unique(data$Analyte), ""),
-                selected = "")
+                selected = "",
+                multiple=T)
   })
   
+
   dataShow <- reactive(
     {req(input$file1)
-    if(is.null(input$selectParameter) ||
-       input$selectParameter == ""){
+    if(is.null(input$selectParameter) ||input$selectParameter == ""|| input$filterButton == 0){
       dataOut <- dataset() } else {
-        dataOut <- dataset() %>% filter(input$selectParameter)}
+        dataOut <- dataset()
+         dataOut <- dataOut %>% filter(Analyte %in% input$selectParameter)
+      }
+      return(dataOut)
     }
-    return(dataOut)
+    
   )
 
   output$result <- renderUI(
@@ -114,10 +130,9 @@ server <- function(input, output) {
   output$figure <- renderPlot({
     req(input$file1)
     dataOut <- dataShow()
-    plot_wq_data(dataOut)
+    ecviz::plot_wq_data(dataOut)
   })
   
 }
 
-# Run the application 
-shinyApp(ui = ui, server = server)
+
