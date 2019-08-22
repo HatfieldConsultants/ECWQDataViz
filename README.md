@@ -11,9 +11,15 @@ Canada Freshwater quality monitoring.
 There are ways of installing the package directly from GitLab but we
 have been having issues with the authentication for those.
 
-To install the latest development version from Gitlab: \* Download the
-project from \* Open the Rproj file in RStudio \* Click “Build \>
-Install and restart”
+To install the latest development version from Gitlab:
+
+  - Download the project from
+    <https://git.hatfieldgroup.net/RPhilibert/ecdataviz> and extract
+    files in a folder
+  - Alternative clone the project from
+    <https://git.hatfieldgroup.net/RPhilibert/ecdataviz>
+  - Open the Rproj file in RStudio
+  - Click “Build \> Install and restart”
 
 ## Usage
 
