@@ -43,11 +43,11 @@ CreatePlotPerAnalyte <- function(gp_plot_data){
     
     analyte_data <- gp_plot_data %>%
       filter(Analyte == an)
-    minDate <- lubridate::ymd(format(min(analyte_data$Sample.time),format="%Y-%m-%01")) %>% 
+    minDate <- lubridate::ymd(format(min(analyte_data$Sample.time),format="%Y-%m-01")) %>% 
                 as.character() %>%
                 as.POSIXct(tz="")  
     
-    maxDateFOM <- lubridate::ymd(format(max(analyte_data$Sample.time),format="%Y-%m-%01"))
+    maxDateFOM <- lubridate::ymd(format(max(analyte_data$Sample.time),format="%Y-%m-01"))
     maxDate <- lubridate::ceiling_date(maxDateFOM) %>%
                 as.character() %>%
                 as.POSIXct(tz="")
