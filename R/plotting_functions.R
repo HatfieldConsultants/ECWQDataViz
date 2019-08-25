@@ -48,10 +48,16 @@ CreatePlotPerAnalyte <- function(gp_plot_data){
                 as.POSIXct(tz="")  
     
     maxDateFOM <- lubridate::ymd(format(max(analyte_data$Sample.time),format="%Y-%m-01"))
-    maxDate <- lubridate::ceiling_date(maxDateFOM) %>%
+    maxDate <- lubridate::ceiling_date(maxDateFOM+30) %>%
                 as.character() %>%
                 as.POSIXct(tz="")
-      
+    
+    if(minDate==maxDate){
+      minDate <- analyte_data$Sample.time
+      maxDate <- analyte_data$Sample.time
+      lims <- c(minDate,maxDate)} else {
+        lims <- c(minDate,maxDate)
+      }
     timeLapse <- maxDate- minDate
     date_fm <- ifelse(timeLapse <= 31, "%d-%m-%Y",
                           ifelse(timeLapse <= 365, "%m-%Y",
@@ -72,7 +78,7 @@ CreatePlotPerAnalyte <- function(gp_plot_data){
       xlab           ("") +
       ylab           (ylabel) +
       ggtitle(title) +
-      scale_x_datetime(labels = date_format(date_fm),limits=c(minDate,maxDate),
+      scale_x_datetime(labels = date_format(date_fm),limits=lims,
                        breaks=date_breaks(date_bk))
     
     if(an != "pH"){
